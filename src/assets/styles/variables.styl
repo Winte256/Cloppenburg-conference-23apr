@@ -1,0 +1,162 @@
+$colorFiller = #fff;
+$colorBg = radial-gradient(135.69% 54.68% at 126.27% 45.32%, #BF36FF 0%, #170928 100%);
+$colorBtn = #170A29;
+$colorAccent = #DBF851;
+$colorPurple = #3B2CAB;
+
+$width = {
+  phoneXs: {
+    buttonText: 300px,
+  },
+  phoneS: {
+    buttonText: 300px,
+  }
+}
+
+$mediaSizes = {
+  phoneS: 375px,
+  phone: 480px,
+  tablet: 799px,
+  desktop: 992px,
+  large: 1026px,
+  extraLarge: 1280px,
+  giant: 1600px
+};
+
+getMedia(fromSize, toSize = false) {
+  if (toSize) {
+    @media (min-width: fromSize) and (max-width: toSize) {
+      {block};
+    }
+  } else {
+    @media (min-width: fromSize) {
+      {block};
+    }
+  }
+}
+
+mediaPhone() {
+  +getMedia($mediaSizes.phone) {
+    {block};
+  }
+}
+
+mediaPhoneS() {
+  +getMedia($mediaSizes.phoneS) {
+    {block};
+  }
+}
+
+mediaTablet() {
+  +getMedia($mediaSizes.tablet) {
+    {block};
+  }
+}
+
+mediaDesktop() {
+  +getMedia($mediaSizes.desktop) {
+    {block};
+  }
+}
+
+mediaLarge() {
+  +getMedia($mediaSizes.large) {
+    {block};
+  }
+}
+
+mediaExtraLarge() {
+  +getMedia($mediaSizes.extraLarge) {
+    {block};
+  }
+}
+
+mediaGiant() {
+  +getMedia($mediaSizes.giant) {
+    {block};
+  }
+}
+
+$fontSizes = {
+  desktop: {
+    h1: {
+      fontSize: 28px,
+      lineHeight: 32px,
+      },
+    text: {
+      fontSize: 14px,
+      lineHeight: 20px,
+      },
+    policies: {
+      fontSize: 12px,
+      lineHeight: 16px,
+      },
+    button: {
+      fontSize: 18px,
+      lineHeight: 28px,
+      },
+    contact: {
+      fontSize: 16px,
+      lineHeight: 32px,
+      }
+  },
+  mobile: {
+    h1: {
+      fontSize: 28px,
+      lineHeight: 32px,
+      },
+    text: {
+      fontSize: 14px,
+      lineHeight: 20px,
+      },
+    policies: {
+      fontSize: 12px,
+      lineHeight: 16px,
+      },
+    button: {
+      fontSize: 18px,
+      lineHeight: 28px,
+      },
+    contact: {
+      fontSize: 16px,
+      lineHeight: 32px,
+      }
+  }
+};
+
+getFont(name = 'text') {
+  font-size: $fontSizes.mobile[name].fontSize;
+  line-height: $fontSizes.mobile[name].lineHeight;
+
+  +mediaTablet() {
+    font-size: $fontSizes.desktop[name].fontSize;
+    line-height: $fontSizes.desktop[name].lineHeight;
+  }
+}
+
+getFontH1() {
+  getFont('h1');
+  font-weight: 600;
+}
+
+getFontText() {
+  getFont('text');
+  font-family "Montserrat", sans-serif
+  font-weight: 400;
+}
+
+getFontPolicies() {
+  getFont('policies');
+  font-family "Montserrat", sans-serif
+  font-weight: 300;
+}
+
+getFontButton() {
+  getFont('button');
+  font-weight: 700;
+}
+
+getFontContact() {
+  getFont('contact');
+  font-weight: 300;
+}
