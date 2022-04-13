@@ -9,10 +9,10 @@
     </button>
     <button
       class="currentValue"
-      :class="{ active: locale === 'tr' }"
-      @click="pickLang('tr')"
+      :class="{ active: locale === 'de' }"
+      @click="pickLang('de')"
     >
-      tr
+      de
     </button>
   </div>
 </template>

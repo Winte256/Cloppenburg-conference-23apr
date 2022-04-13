@@ -1,7 +1,7 @@
 <template>
   <div class="base-wrapper">
     <div class="base-container">
-      <the-header/>
+      <the-header />
       <router-view />
     </div>
   </div>
@@ -40,14 +40,8 @@ export default {
   max-width: 480px;
   min-height: 100vh;
 
-  +mediaTablet() {
-    max-width: 750px;
+  +mediaPhoneS() {
     padding: 0 15px;
-  }
-
-  +mediaDesktop() {
-    max-width: 1440px;
-    padding: 0 64px;
   }
 }
 </style>

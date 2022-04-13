@@ -56,7 +56,6 @@ export default {
 <style lang="stylus" scoped>
 .contactsBox {
   width: 100%;
-  max-width: $width.phoneXs.buttonText;
 
   // border-top: 1px solid $colorPurple;
   // border-radius: 12px 12px 0px 0px;

@@ -1,17 +1,23 @@
 <template>
   <div class="home">
     <div class="titleWrap">
-      <!-- <base-icon-svg :width="84" :height="84" viewBox="0 0 84 84">
-        <heart-icon/>
-      </base-icon-svg> -->
+      <the-title class="home__title" :small="true">
+        23.04.2022
+        <br />
+        Deutschland, Cloppenburg
+        <template v-slot:yellow>OTON KONFERENZ</template>
+      </the-title>
       <the-title class="home__title">
-        {{ locale === "tr" ? "" : $t("Искренне поздравляем") }}
-        <template v-slot:yellow>
-          {{ $t("с Международным женским днём") }}
-        </template>
+        {{ $t("ЧТО ТАКОЕ BLOCKCHAIN") }}
+        <template v-slot:yellow> </template>
       </the-title>
     </div>
-    <p
+    <img
+      class="nftTicket"
+      :src="require(`@/assets/images/nft-ticket.gif`)"
+      alt="nft-ticket"
+    />
+    <!-- <p
       class="home__text text"
       v-html="$t('Специально к этому празднику мы')"
     ></p>
@@ -20,26 +26,63 @@
       <div class="sliderItemsWrap">
         <sliderItems />
       </div>
-    </div>
+    </div> -->
 
-    <p
+    <!-- <p
       class="home__text text"
-      v-html="$t('Нажмите на кнопку Получить NFT')"
-    ></p>
+      v-html="$t('Нажмите на кнопку КУПИТЬ NFT-БИЛЕТ')"
+    ></p> -->
 
     <div class="home__buttonsBox buttonsBox">
-      <common-button :hasBackground="true" @click="getNFT">{{
-        loading ? $t("Загрузка") : $t("Получить NFT")
-      }}</common-button>
+      <common-button :hasBackground="true">
+        {{ $t("КУПИТЬ NFT-БИЛЕТ") }}
+      </common-button>
     </div>
-    <p class="home__policies policies">
-      <span v-html="$t('Нажмимая на кнопку')"></span>
-
-      <br /><br />
-      <span v-html="$t('Для получения NFT')"></span>
+    <p class="policies policies_price">5 USDT</p>
+    <p class="policies policies_privacy">
+      <span v-html="$t('Нажимая на кнопку')" />
+      <a
+        class="policiesLink"
+        href="https://oton.org/media/PRIVACY_NOTICE.pdf?b6f7ac2c"
+        target="_blank"
+        rel="noopener noreferrer"
+        v-html="$t('политикой конфиденциальности')"
+      />
+    </p>
+    <p class="policies policies_nft">
+      <span> {{ $t("Для получения NFT") }} </span>
+      <span class="metamaskText" v-html="$t('Регистрация нового кошелька')" />
     </p>
 
+    <p class="home__text text" v-html="$t('Инструкция подключения сети')" />
+
+    <iframe
+      class="iframe"
+      src="https://www.youtube.com/embed/t5Ob-PxmCO0"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    />
+
+    <p class="text addressText">11.00 - 17.00</p>
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://goo.gl/maps/KaAMQh69rScghzoz7"
+      class="text addressLink"
+      >Stadthalle Cloppenburg Mühlenstraße 20-22, 49661 Cloppenburg
+    </a>
+
     <contacts-box />
+
+    <div class="organizator">
+      <div class="organizatorInner">
+        <p class="organizatorText" v-html="$t('Организатор')" />
+        <p class="organizatorText" v-html="$t('Юрий Гришин')" />
+      </div>
+      <a class="organizatorText" href="tel:+49 1629749353">+49 1629749353</a>
+    </div>
   </div>
 </template>
 
@@ -49,7 +92,6 @@ import CommonButton from '@/components/CommonButton.vue';
 // import BaseIconSvg from '@/components/BaseIconSvg.vue';
 // import HeartIcon from '@/components/SvgIcons/HeartIcon.vue';
 import ContactsBox from '@/components/ContactsBox.vue';
-import SliderItems from '@/components/SliderItems.vue';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
@@ -66,7 +108,6 @@ export default {
     // BaseIconSvg,
     // HeartIcon,
     ContactsBox,
-    SliderItems,
   },
 
   setup() {
@@ -148,34 +189,59 @@ export default {
     }
   }
 
+  &__policies {
+    margin-bottom: 56px;
+  }
+
   &__buttonsBox {
     margin-bottom: 8px;
   }
 }
 
 .text {
-  max-width: $width.phoneXs.buttonText;
+  display: block;
   getFontText();
   text-align: center;
-
-  +mediaPhoneS() {
-    min-width: $width.phoneS.buttonText;
-  }
+  color: $colorFiller;
 }
 
 .policies {
-  margin-bottom: 56px;
   text-align: center;
-  max-width: 300px;
   getFontPolicies();
+  color: $colorFiller;
+
+  &_price {
+    margin-bottom: 20px;
+  }
+
+  &_privacy {
+    margin-bottom: 20px;
+  }
+
+  &_nft {
+    margin-bottom: 56px;
+  }
 }
 
 .policiesLink {
+  padding-left: 5px;
   color: $colorAccent;
 
   &:hover {
     color: $colorAccent;
-    opacity: 0.6;
+  }
+}
+
+.metamaskText {
+  display: block;
+  padding-left: 5px;
+
+  a {
+    color: $colorAccent;
+
+    &:hover {
+      color: $colorAccent;
+    }
   }
 }
 
@@ -184,33 +250,52 @@ export default {
   grid-row-gap: 16px;
 }
 
-.sliderItemsBox {
-  margin-bottom: 24px;
+.nftTicket {
+  display: block;
+  margin-bottom: 40px;
   width: 100%;
-  max-width: 320px;
-  overflow-y: auto;
-  padding-bottom: 15px;
-  scrollbar-width: thin;
-  scrollbar-color: $colorAccent #fff;
+}
 
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
+.organizator {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  width: 100%;
+}
 
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+.organizatorText {
+  margin-bottom: 5px;
+  getFontText();
+  color: $colorFiller;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: $colorAccent;
-    border: 2px solid $colorAccent;
-    border-radius: 6px;
+.iframe {
+  display: block;
+  margin-bottom: 20px;
+  width: 300px;
+  height: 168px;
+
+  +mediaPhoneS() {
+    width: 345px;
+    height: 194px;
   }
 }
 
-.sliderItemsWrap {
-  display: grid;
-  grid-auto-flow: column;
-  grid-column-gap: 8px;
+.addressText {
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.addressLink {
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+  text-decoration: underline;
+
+  &:hover {
+    color: $colorFiller;
+  }
 }
 </style>

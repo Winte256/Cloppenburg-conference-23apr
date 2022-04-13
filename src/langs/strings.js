@@ -3,7 +3,7 @@
 import allowedLangs from './allowedLangs';
 import base from './translationsBase.csv';
 
-// [key: string]: [key, ru, tr][]
+// [key: string]: [key, ru, de][]
 const normalizedBase = base.map((row) =>
   row.map((item) => item.replace(/\n/gi, ' ').replace(/\s+/g, ' ').trim()),
 );

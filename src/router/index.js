@@ -14,11 +14,6 @@ const routes = [
         name: 'home',
         component: Home,
       },
-      {
-        path: 'your-gift',
-        name: 'YourGift',
-        component: () => import('@/views/YourGiftView.vue'),
-      },
     ],
   },
 ];
@@ -31,7 +26,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { lang } = to.params;
 
-  if (!['ru', 'tr'].includes(lang)) {
+  if (!['ru', 'de'].includes(lang)) {
     return next('/ru');
   }
 

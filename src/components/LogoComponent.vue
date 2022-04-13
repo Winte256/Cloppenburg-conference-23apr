@@ -1,6 +1,11 @@
 <template>
   <router-link to="/" class="logo">
-    <base-icon-svg :width="78" :height="33" viewBox="0 0 78 33">
+    <base-icon-svg
+      class="logoIcon"
+      :width="78"
+      :height="33"
+      viewBox="0 0 78 33"
+    >
       <logo-icon />
     </base-icon-svg>
   </router-link>
@@ -19,4 +24,10 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.logoIcon {
+  display: block;
+  width: 117px;
+  height: 49px;
+}
+</style>
