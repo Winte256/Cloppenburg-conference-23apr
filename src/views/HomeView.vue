@@ -134,8 +134,13 @@ export default {
       loading.value = true;
 
       try {
-        await buyConf();
-        success.value = true;
+        const result = await buyConf();
+        if (result) {
+          success.value = true;
+        } else {
+          success.value = false;
+          toast.error(t('Неизвестная Ошибка при получении NFT'));
+        }
       } catch (error) {
         success.value = false;
         console.error(error);

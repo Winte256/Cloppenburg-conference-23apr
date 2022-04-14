@@ -22,6 +22,7 @@ export const getContract = () => {
     toast.error(
       'Что то пошло не так при инициализации контракта. Попробуйте обновить страницу',
     );
+    return null;
   }
 
   console.log('contract.methods:', contract.methods);
@@ -55,6 +56,12 @@ export const buyConf = async () => {
   const account = await getAcc();
 
   if (!account) {
+    toast.error(
+      i18n.global.t('Что то пошло не так при попытке получить адрес'),
+    );
+    return null;
+  }
+  if (!contract) {
     toast.error(
       i18n.global.t('Что то пошло не так при попытке получить адрес'),
     );
