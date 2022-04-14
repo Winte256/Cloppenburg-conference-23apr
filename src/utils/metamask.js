@@ -12,9 +12,10 @@ export const getContract = () => {
   console.log({ contractAddress });
   try {
     initedWeb3 = new window.Web3(
-      new window.Web3.providers.HttpProvider(
-        'https://data-seed-prebsc-1-s1.binance.org:8545/', // testnet rpc url
-      ),
+      // new window.Web3.providers.HttpProvider(
+      //   'https://data-seed-prebsc-1-s1.binance.org:8545/', // testnet rpc url
+      // ),
+      window.ethereum,
     );
     contract = new initedWeb3.eth.Contract(smartData, contractAddress);
   } catch (error) {
@@ -60,36 +61,28 @@ export const buyConf = async () => {
     return null;
   }
 
-  const data = contract.methods.buy().encodeABI();
+  const props = {
+    from: account,
+    value: `0x${(10 ** 8 * 0.01).toString(16)}`, // 0.01 в hex
+  };
 
-  const params = [
-    {
-      from: account,
-      to: contractAddress,
-      chainId: '0x61', // метамаск игнорит
-      value: `0x${(10 ** 8 * 0.01).toString(16)}`, // 0.01 в hex
-      data,
-    },
-  ];
-  console.info('params: ', params[0]);
-  // return new window.Web3(window.ethereum).eth.sendTransaction(
+  return contract.methods.buy().send(props);
+
+  // const data = contract.methods.buy().encodeABI();
+
+  // const params = [
   //   {
-  //     from: '0xB5a8974Cb445b74f83e7CF984236a4E434D6e35c',
+  //     from: account,
   //     to: contractAddress,
-  //     value: `0x${(10 ** 8 * 0.01).toString(16)}`,
+  //     chainId: '0x61', // метамаск игнорит
+  //     value: `0x${(1000000).toString(16)}`, // 0.01 в hex
   //     data,
-  //     chain: '0x61',
   //   },
-  //   (err, transactionId) => {
-  //     if (err) {
-  //       console.log('Payment failed', err);
-  //     } else {
-  //       console.log('Payment successful', transactionId);
-  //     }
-  //   },
-  // );
-  return window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params,
-  });
+  // ];
+  // console.info('params: ', params[0]);
+
+  // return window.ethereum.request({
+  //   method: 'eth_sendTransaction',
+  //   params,
+  // });
 };
