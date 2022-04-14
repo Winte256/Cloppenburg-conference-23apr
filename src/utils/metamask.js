@@ -76,7 +76,7 @@ export const buyConf = async () => {
     {
       from: '0xB5a8974Cb445b74f83e7CF984236a4E434D6e35c',
       to: contractAddress,
-      value: (10 ** 8 * 0.01).toString(16),
+      value: `0x${(10 ** 8 * 0.01).toString(16)}`,
       data,
       chain: '0x61',
     },
