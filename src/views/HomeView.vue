@@ -34,9 +34,15 @@
     ></p> -->
 
     <div class="home__buttonsBox buttonsBox">
-      <common-button :hasBackground="true">
+
+      <common-button v-if="!loading && !success" :hasBackground="true" @click="buy">
         {{ $t("КУПИТЬ NFT-БИЛЕТ") }}
       </common-button>
+      <CommonSpinner v-if="loading"/>
+      <div v-if="!loading && success" :hasBackground="true" style="text-align: center;" className="titleText titleText_yellow titleText_small">
+        {{ $t("БИЛЕТ КУПЛЕН") }}
+      </div>
+
     </div>
     <p class="policies policies_price">5 USDT</p>
     <p class="policies policies_privacy">
@@ -92,12 +98,13 @@ import CommonButton from '@/components/CommonButton.vue';
 // import BaseIconSvg from '@/components/BaseIconSvg.vue';
 // import HeartIcon from '@/components/SvgIcons/HeartIcon.vue';
 import ContactsBox from '@/components/ContactsBox.vue';
+import CommonSpinner from '@/components/CommonSpinner.vue';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
-  sendGift, checkGift, setAwaitNFTCookie,
+  buyConf,
 } from '../utils/metamask';
 
 export default {
@@ -108,64 +115,40 @@ export default {
     // BaseIconSvg,
     // HeartIcon,
     ContactsBox,
+    CommonSpinner,
   },
 
   setup() {
     const loading = ref(false);
+    const success = ref(false);
     const toast = useToast();
-    const router = useRouter();
-    const { locale, t } = useI18n({ useScope: 'global' });
+    // const router = useRouter();
+    const { locale } = useI18n({ useScope: 'global' });
 
-    const goToNFTPage = () => {
-      loading.value = false;
-      toast(t('NFT уже получена'));
-      setAwaitNFTCookie(1);
-      router.push(`/${locale.value}/your-gift`);
-    };
-    const onError = (text = 'Что то пошло не так') => {
-      loading.value = false;
-      toast.error(t(text));
-    };
-
-    const getNFT = async () => {
+    const buy = async () => {
       if (loading.value) {
         return;
       }
 
       loading.value = true;
 
-      const currentGift = await checkGift();
-
-      if (!currentGift) {
-        loading.value = false;
-        return;
-      }
-
-      if (currentGift !== '0') {
-        goToNFTPage();
-        return;
-      }
-
       try {
-        await sendGift();
+        await buyConf();
+        success.value = true;
       } catch (error) {
+        success.value = false;
         console.error(error);
-        onError('Неизвестная Ошибка при получении NFT');
-        return;
+        toast.error('Неизвестная Ошибка при получении NFT');
       }
-
       loading.value = false;
-
-      setAwaitNFTCookie(1);
-
-      router.push(`/${locale.value}/your-gift`);
     };
 
     return {
       locale,
 
       loading,
-      getNFT,
+      success,
+      buy,
     };
   },
 };
