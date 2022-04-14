@@ -72,9 +72,24 @@ export const buyConf = async () => {
     },
   ];
   console.info('params: ', params[0]);
-
-  return window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params,
-  });
+  return new window.Web3(window.ethereum).eth.sendTransaction(
+    {
+      from: '0xB5a8974Cb445b74f83e7CF984236a4E434D6e35c',
+      to: contractAddress,
+      value: (10 ** 8 * 0.01).toString(16),
+      data,
+      chain: '0x61',
+    },
+    (err, transactionId) => {
+      if (err) {
+        console.log('Payment failed', err);
+      } else {
+        console.log('Payment successful', transactionId);
+      }
+    },
+  );
+  // return window.ethereum.request({
+  //   method: 'eth_sendTransaction',
+  //   params,
+  // });
 };
