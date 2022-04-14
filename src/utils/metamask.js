@@ -63,7 +63,7 @@ export const buyConf = async () => {
 
   const props = {
     from: account,
-    value: `0x${(10 ** 8 * 0.01).toString(16)}`, // 0.01 в hex
+    value: `0x${(10 ** 18 * 0.01).toString(16)}`, // 0.01 в hex
   };
 
   return contract.methods.buy().send(props);
