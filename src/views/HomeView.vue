@@ -123,7 +123,8 @@ export default {
     const success = ref(false);
     const toast = useToast();
     // const router = useRouter();
-    const { locale } = useI18n({ useScope: 'global' });
+
+    const { locale, t } = useI18n({ useScope: 'global' });
 
     const buy = async () => {
       if (loading.value) {
@@ -138,7 +139,7 @@ export default {
       } catch (error) {
         success.value = false;
         console.error(error);
-        toast.error('Неизвестная Ошибка при получении NFT');
+        toast.error(t('Неизвестная Ошибка при получении NFT'));
       }
       loading.value = false;
     };
