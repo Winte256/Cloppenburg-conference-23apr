@@ -25,8 +25,6 @@ export const getContract = () => {
     return null;
   }
 
-  console.log('contract.methods:', contract.methods);
-
   return contract;
 };
 
@@ -55,13 +53,7 @@ export const buyConf = async () => {
   const contract = getContract();
   const account = await getAcc();
 
-  if (!account) {
-    toast.error(
-      i18n.global.t('Что то пошло не так при попытке получить адрес'),
-    );
-    return null;
-  }
-  if (!contract) {
+  if (!account || !contract) {
     toast.error(
       i18n.global.t('Что то пошло не так при попытке получить адрес'),
     );
@@ -73,23 +65,21 @@ export const buyConf = async () => {
     value: `0x${(10 ** 18 * 0.01).toString(16)}`, // 0.01 в hex
   };
 
+  console.info('call buy method with props: ', props);
+
   return contract.methods.buy().send(props);
+};
+export const hasConf = async () => {
+  const toast = useToast();
+  const contract = getContract();
+  const account = await getAcc();
 
-  // const data = contract.methods.buy().encodeABI();
+  if (!account || !contract) {
+    toast.error(
+      i18n.global.t('Что то пошло не так при попытке получить адрес'),
+    );
+    return null;
+  }
 
-  // const params = [
-  //   {
-  //     from: account,
-  //     to: contractAddress,
-  //     chainId: '0x61', // метамаск игнорит
-  //     value: `0x${(1000000).toString(16)}`, // 0.01 в hex
-  //     data,
-  //   },
-  // ];
-  // console.info('params: ', params[0]);
-
-  // return window.ethereum.request({
-  //   method: 'eth_sendTransaction',
-  //   params,
-  // });
+  return contract.methods.balanceOf(account, 0).call();
 };

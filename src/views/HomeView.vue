@@ -44,7 +44,18 @@
       </div>
 
     </div>
-    <p class="policies policies_price">0.01 BNB (~5 USD)</p>
+    <p class="policies policies_price" v-if="!success">0.01 BNB (~5 USD)</p>
+    <p class="policies policies_price" style="font-size: 16px; line-height: 1.2" v-if="success">
+      {{ $t('Для добавления NFT в кошелёк, укажите адрес') }}:
+      <br>
+      <span style="font-weight: 400; font-size: 20px">
+        0xa90c5f18a678229c09be17ba1e8754d33e700326
+      <br>
+      ID: 0
+      </span>
+      <br>
+      <a className="policiesLink" href="/pdf/manual.pdf" target="_blank">{{ $t('Подробная pdf-инструкция') }}</a>
+    </p>
     <p class="policies policies_privacy">
       <span v-html="$t('Нажимая на кнопку')" />
       <a
@@ -99,12 +110,12 @@ import CommonButton from '@/components/CommonButton.vue';
 // import HeartIcon from '@/components/SvgIcons/HeartIcon.vue';
 import ContactsBox from '@/components/ContactsBox.vue';
 import CommonSpinner from '@/components/CommonSpinner.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useToast } from 'vue-toastification';
 // import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
-  buyConf,
+  buyConf, hasConf,
 } from '../utils/metamask';
 
 export default {
@@ -121,6 +132,7 @@ export default {
   setup() {
     const loading = ref(false);
     const success = ref(false);
+    const isBought = ref(0);
     const toast = useToast();
     // const router = useRouter();
 
@@ -134,9 +146,18 @@ export default {
       loading.value = true;
 
       try {
+        isBought.value = +(await hasConf());
+        console.info('isBought: ', isBought.value);
+        if (isBought.value > 0) {
+          success.value = true;
+          loading.value = false;
+          return;
+        }
+
         const result = await buyConf();
         if (result) {
           success.value = true;
+          isBought.value = 1;
         } else {
           success.value = false;
           toast.error(t('Неизвестная Ошибка при получении NFT'));
@@ -148,6 +169,12 @@ export default {
       }
       loading.value = false;
     };
+
+    onMounted(async () => {
+      isBought.value = +(await hasConf());
+
+      success.value = isBought.value > 0;
+    });
 
     return {
       locale,
