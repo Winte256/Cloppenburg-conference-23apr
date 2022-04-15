@@ -44,7 +44,7 @@
       </div>
 
     </div>
-    <p class="policies policies_price">5 USDT</p>
+    <p class="policies policies_price">0.01 BNB (~5 USD)</p>
     <p class="policies policies_privacy">
       <span v-html="$t('Нажимая на кнопку')" />
       <a
